@@ -12,7 +12,8 @@ app.get('/api/users', (req, res) => {
     return res.json(users);
 })
 
-//get user html
+//get users in html (Server side rendering, good for desktop and 
+//mobile browsers, wont work for mobile apps since this api gives data in html form)
 app.get('/users', (req, res) => {
     const html = `
         <ul>
@@ -23,9 +24,7 @@ app.get('/users', (req, res) => {
 })
 
 //get rquest with dynamic path parameters
-
 //get user with specific ID
-
 app.get('/users/:id', (req,res) => {
     const id = Number(req.params.id);
     const user = users.find((user) => user.id === id);
