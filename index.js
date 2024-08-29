@@ -33,27 +33,12 @@ app.get('/users/:id', (req,res) => {
 
 //create a user // add data
 app.post('/api/users' , (req,res)=> {
-    return res.json({status:'pending'});
+    const body = req.body;
+    console.log("body ",body)
+    return  res.json({data:'body'});
 })
 
 
-//handling API for same route for different type of request
-//get, post, put, delete
-//(Grouping of APIs)
-app.route('api/users/:id')
-    .get((req,res)=>{
-        const id = Number(req.params.id);
-        const user = users.find((user) => user.id === id);
-        return res.json(user);
-    })
-    .put((req,res)=>{
-        //edit user with id
-        return  res.json({status:"pending"});
-    })
-    .delete((req,res) => {
-        //delete the user
-        return  res.json({status:"pending"});
-    })
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
