@@ -9,6 +9,12 @@ const PORT = 8000;
 
 app.use(express.urlencoded({ extended: false })) // middleware to convert the data from url into form data
 //create a user // add data
+
+// app.use((req,res,next) => {
+//     console.log("Middle ware 1");
+//     next();
+// });
+
 app.post('/api/users', (req, res) => {
     const body = req.body;
     users.push({ ...body, id: users.length + 1 });
