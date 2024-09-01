@@ -1,42 +1,57 @@
 const express = require('express');
 const fs = require('fs');
 const app = express();
-const users = require('./MOCK_DATA.json');
-const { error } = require('console');
-
+const mongoose = require('mongoose');
 const PORT = 8000;
 
-
-app.use(express.urlencoded({ extended: false })) // middleware to convert the data from url into form data
-//create a user // add data
-
-app.use((req,res,next) => {
-    console.log("Middle ware 1");
-    // return res.json('hello');
-    next();
-});
-
-
-app.use((req,res,next) => {
-    console.log("Middle ware 2");
-    // return res.json('hello');
-    next();
-});
-
-app.get('/api/users', (req,res) => {
-    return res.json(users)
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/', {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
 })
+.then(() => {
+    console.log('Connected to MongoDB');
+})
+.catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
+});
 
-// app.post('/api/users', (req, res) => {
-//     const body = req.body;
-//     users.push({ ...body, id: users.length + 1 });
-//     fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
-//         return res.json({ data: body });
-//     })
-// });
+// Define the user schema
+const userSchema = new mongoose.Schema({
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    age: {
+      type: Number,
+      default: null,
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+});
+  
+// Create a User model
+const User = mongoose.model('User', userSchema);
 
-
-
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
