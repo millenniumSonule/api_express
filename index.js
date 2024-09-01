@@ -10,18 +10,30 @@ const PORT = 8000;
 app.use(express.urlencoded({ extended: false })) // middleware to convert the data from url into form data
 //create a user // add data
 
-// app.use((req,res,next) => {
-//     console.log("Middle ware 1");
-//     next();
-// });
-
-app.post('/api/users', (req, res) => {
-    const body = req.body;
-    users.push({ ...body, id: users.length + 1 });
-    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
-        return res.json({ data: body });
-    })
+app.use((req,res,next) => {
+    console.log("Middle ware 1");
+    // return res.json('hello');
+    next();
 });
+
+
+app.use((req,res,next) => {
+    console.log("Middle ware 2");
+    // return res.json('hello');
+    next();
+});
+
+app.get('/api/users', (req,res) => {
+    return res.json(users)
+})
+
+// app.post('/api/users', (req, res) => {
+//     const body = req.body;
+//     users.push({ ...body, id: users.length + 1 });
+//     fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
+//         return res.json({ data: body });
+//     })
+// });
 
 
 
