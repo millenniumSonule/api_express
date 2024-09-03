@@ -20,18 +20,18 @@ mongoose.connect('mongodb://localhost:27017/', {
 const userSchema = new mongoose.Schema({
     name: {
       type: String,
-      required: true,
+    //   required: true,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
+    //   required: true,
       unique: true,
       lowercase: true,
     },
     password: {
       type: String,
-      required: true,
+    //   required: true,
     },
     age: {
       type: Number,
@@ -50,8 +50,24 @@ const userSchema = new mongoose.Schema({
   
 // Create a User model
 const User = mongoose.model('User', userSchema);
+app.post('/users', async (req, res) => {
+    try {
+        // Create a new user from the request body
+        const newUser = new User(req.body);
+        
+        // Save the user to the database
+        const savedUser = await newUser.save();
+        
+        // Send the saved user as a response
+        res.status(201).json(savedUser);
+    } catch (error) {
+        // Handle any errors that occur during saving
+        res.status(400).json({ message: error.message });
+    }
+});
 
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
