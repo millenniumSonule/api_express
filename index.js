@@ -4,6 +4,9 @@ const app = express();
 const mongoose = require('mongoose');
 const PORT = 8000;
 
+// Middleware to parse JSON
+app.use(express.json());
+
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/', {
     useNewUrlParser: true, 
@@ -20,18 +23,15 @@ mongoose.connect('mongodb://localhost:27017/', {
 const userSchema = new mongoose.Schema({
     name: {
       type: String,
-    //   required: true,
       trim: true,
     },
     email: {
       type: String,
-    //   required: true,
       unique: true,
       lowercase: true,
     },
     password: {
       type: String,
-    //   required: true,
     },
     age: {
       type: Number,
@@ -50,6 +50,7 @@ const userSchema = new mongoose.Schema({
   
 // Create a User model
 const User = mongoose.model('User', userSchema);
+
 app.post('/users', async (req, res) => {
     try {
         // Create a new user from the request body
@@ -70,5 +71,3 @@ app.post('/users', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
- 
