@@ -1,6 +1,7 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const app = express();
+const mongoose = require('mongoose');
 const PORT = 8000;
 
 
@@ -16,7 +17,7 @@ async function connectDB() {
 
     const db = client.db(dbName);
 
-    const list_of_collections = await client.db('test').admin();
+    const list_of_collections = await db.listCollections().toArray();
     console.log(list_of_collections)
 
     await client.close();
