@@ -15,7 +15,6 @@ async function connectDB() {
 }
 
 
-
 // insert data to mongoDB
 async function insertData() {
 
